@@ -27,7 +27,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.NomeCompleto).IsRequired().HasMaxLength(150);
             entity.Property(e => e.SenhaHash).IsRequired().HasMaxLength(255);
             entity.Property(e => e.TipoUsuario).IsRequired();
-            entity.Property(e => e.DataCadastro).IsRequired().HasDefaultValueSql("DATETIME('now')");
+            entity.Property(e => e.DataCadastro).IsRequired().HasDefaultValueSql("GETDATE()");
             entity.Property(e => e.Ativo).IsRequired().HasDefaultValue(true);
         });
         

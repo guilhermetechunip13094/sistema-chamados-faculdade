@@ -8,9 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configurar Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    // Para demonstração, usar SQLite em arquivo temporário
-    // Em produção, usar SQL Server: options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-    options.UseSqlite("Data Source=sistema_chamados_demo.db");
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddControllers();
@@ -49,7 +47,7 @@ if (app.Environment.IsDevelopment())
 // Usar CORS
 app.UseCors("AllowAll");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
