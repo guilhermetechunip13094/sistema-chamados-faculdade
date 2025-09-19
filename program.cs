@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SistemaChamados.Application.Services;
@@ -11,10 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configurar Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    
 // Registrar serviços
 builder.Services.AddScoped<ITokenService, TokenService>();
 
@@ -50,7 +49,35 @@ builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Adiciona a definição de segurança para o Swagger
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        Description = "Insira o token JWT desta forma: Bearer {seu token}"
+    });
+
+    // Adiciona o requisito de segurança que aplica a definição acima
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 var app = builder.Build();
 
