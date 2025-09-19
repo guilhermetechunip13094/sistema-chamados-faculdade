@@ -17,7 +17,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Registrar serviços
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
 
 // Configurar CORS para permitir requisições do frontend
 builder.Services.AddCors(options =>
