@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaChamados.Application.DTOs;
+using SistemaChamados.Application.Services;
 using SistemaChamados.Core.Entities;
 using SistemaChamados.Data;
 using BCrypt.Net;
+using System.Security.Claims;
 
 namespace SistemaChamados.API.Controllers;
 
@@ -12,10 +15,12 @@ namespace SistemaChamados.API.Controllers;
 public class UsuariosController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly ITokenService _tokenService;
 
-    public UsuariosController(ApplicationDbContext context)
+    public UsuariosController(ApplicationDbContext context, ITokenService tokenService)
     {
         _context = context;
+        _tokenService = tokenService;
     }
 
     [HttpPost("registrar-admin")]
@@ -57,5 +62,47 @@ public class UsuariosController : ControllerBase
         };
 
         return CreatedAtAction(nameof(RegistrarAdmin), new { id = usuario.Id }, response);
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto loginRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        // Buscar usuário pelo email
+        var usuario = await _context.Usuarios
+            .FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
+
+        // Verificar se usuário existe e senha está correta
+        if (usuario == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Senha, usuario.SenhaHash))
+        {
+            return Unauthorized("Email ou senha inválidos.");
+        }
+
+        // Verificar se usuário está ativo
+        if (!usuario.Ativo)
+        {
+            return Unauthorized("Usuário inativo.");
+        }
+
+        // Gerar token JWT
+        var token = _tokenService.GenerateToken(usuario);
+
+        return Ok(new LoginResponseDto { Token = token });
+    }
+
+    [HttpGet("perfil")]
+    [Authorize]
+    public IActionResult ObterPerfilUsuario()
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+        return Ok($"Acesso autorizado. Perfil do usuário com ID: {userId}.");
     }
 }
