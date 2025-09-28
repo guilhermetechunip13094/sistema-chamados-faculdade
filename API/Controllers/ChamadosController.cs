@@ -76,4 +76,35 @@ public class ChamadosController : ControllerBase
 
         return Ok(novoChamado);
     }
+[HttpGet]
+public async Task<IActionResult> GetChamados()
+{
+    var chamados = await _context.Chamados
+        .Include(c => c.Solicitante)
+        .Include(c => c.Status)
+        .Include(c => c.Prioridade)
+        .Include(c => c.Categoria)
+        .ToListAsync();
+
+    return Ok(chamados);
+}
+
+[HttpGet("{id}")]
+public async Task<IActionResult> GetChamadoPorId(int id)
+{
+    var chamado = await _context.Chamados
+        .Include(c => c.Solicitante)
+        .Include(c => c.Tecnico) // Inclui o técnico também, se houver
+        .Include(c => c.Status)
+        .Include(c => c.Prioridade)
+        .Include(c => c.Categoria)
+        .FirstOrDefaultAsync(c => c.Id == id);
+
+    if (chamado == null)
+    {
+        return NotFound("Chamado não encontrado.");
+    }
+
+    return Ok(chamado);
+}
 }

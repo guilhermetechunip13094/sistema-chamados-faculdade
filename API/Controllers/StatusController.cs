@@ -9,63 +9,63 @@ namespace SistemaChamados.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class CategoriasController : ControllerBase
+public class StatusController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public CategoriasController(ApplicationDbContext context)
+    public StatusController(ApplicationDbContext context)
     {
         _context = context;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCategorias()
+    public async Task<IActionResult> GetStatus()
     {
-        var categorias = await _context.Categorias
-            .Where(c => c.Ativo)
+        var status = await _context.Status
+            .Where(s => s.Ativo)
             .ToListAsync();
 
-        return Ok(categorias);
+        return Ok(status);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCategoria(int id)
+    public async Task<IActionResult> GetStatusPorId(int id)
     {
-        var categoria = await _context.Categorias
-            .FirstOrDefaultAsync(c => c.Id == id);
+        var status = await _context.Status
+            .FirstOrDefaultAsync(s => s.Id == id);
 
-        if (categoria == null)
+        if (status == null)
         {
-            return NotFound("Categoria não encontrada.");
+            return NotFound("Status não encontrado.");
         }
 
-        return Ok(categoria);
+        return Ok(status);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CriarCategoria([FromBody] CriarCategoriaDto request)
+    public async Task<IActionResult> CriarStatus([FromBody] CriarStatusDto request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var categoria = new Categoria
+        var status = new Status
         {
             Nome = request.Nome,
             Descricao = request.Descricao,
             Ativo = true
         };
 
-        _context.Categorias.Add(categoria);
+        _context.Status.Add(status);
         await _context.SaveChangesAsync();
 
-        return Ok(categoria);
+        return Ok(status);
     }
 }
 
-// DTO para Categoria
-public class CriarCategoriaDto
+// DTO para Status
+public class CriarStatusDto
 {
     public string Nome { get; set; } = string.Empty;
     public string? Descricao { get; set; }
