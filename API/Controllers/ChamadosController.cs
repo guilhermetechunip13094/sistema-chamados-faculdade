@@ -107,4 +107,37 @@ public async Task<IActionResult> GetChamadoPorId(int id)
 
     return Ok(chamado);
 }
+
+[HttpPut("{id}")]
+public async Task<IActionResult> AtualizarChamado(int id, [FromBody] AtualizarChamadoDto request)
+{
+    var chamado = await _context.Chamados.FindAsync(id);
+    if (chamado == null)
+    {
+        return NotFound("Chamado não encontrado.");
+    }
+    // Valida se o novo StatusId existe
+    var statusExiste = await _context.Status.AnyAsync(s => s.Id == request.StatusId);
+    if (!statusExiste)
+    {
+        return BadRequest("O StatusId fornecido é inválido.");
+    }
+    // Atualiza os campos do chamado
+    chamado.StatusId = request.StatusId;
+    // Se um TecnicoId foi fornecido, atualiza. Senão, mantém o existente.
+    if (request.TecnicoId.HasValue)
+    {
+        // Valida se o novo TecnicoId existe
+        var tecnicoExiste = await _context.Usuarios.AnyAsync(u => u.Id == request.TecnicoId.Value && u.Ativo);
+        if (!tecnicoExiste)
+        {
+            return BadRequest("O TecnicoId fornecido é inválido ou o usuário está inativo.");
+        }
+        chamado.TecnicoId = request.TecnicoId;
+    }
+    _context.Chamados.Update(chamado);
+    await _context.SaveChangesAsync();
+    // Retorna o chamado atualizado
+    return Ok(chamado);
+}
 }
