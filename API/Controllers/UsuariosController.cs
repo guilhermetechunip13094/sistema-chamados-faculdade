@@ -164,4 +164,36 @@ public class UsuariosController : ControllerBase
 
         return Ok(new { message = "Se um usuário com este e-mail existir, um link de redefinição de senha foi enviado." });
     }
+
+    [HttpPost("resetar-senha")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetarSenha([FromBody] ResetarSenhaDto request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        // 1. Encontra o usuário pelo token de redefinição de senha
+        var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+        
+        // 2. Valida o token
+        if (usuario == null || usuario.ResetTokenExpires < DateTime.UtcNow)
+        {
+            return BadRequest(new { message = "Token inválido ou expirado." });
+        }
+        
+        // 3. Cria o hash da nova senha
+        var novoSenhaHash = BCrypt.Net.BCrypt.HashPassword(request.NovaSenha);
+        
+        // 4. Atualiza a senha do usuário e limpa os campos do token
+        usuario.SenhaHash = novoSenhaHash;
+        usuario.PasswordResetToken = null;
+        usuario.ResetTokenExpires = null;
+        
+        _context.Usuarios.Update(usuario);
+        await _context.SaveChangesAsync();
+        
+        return Ok(new { message = "Senha redefinida com sucesso." });
+    }
 }
