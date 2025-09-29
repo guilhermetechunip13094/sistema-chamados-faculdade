@@ -17,10 +17,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     
 // Registrar serviços
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IGeminiService, GeminiService>();
+builder.Services.AddScoped<IOpenAIService, OpenAIService>();
 
-// Configurar HttpClient para o GeminiService
-builder.Services.AddHttpClient<IGeminiService, GeminiService>();
+// Configurar HttpClient para o OpenAIService
+builder.Services.AddHttpClient<IOpenAIService, OpenAIService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

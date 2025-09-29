@@ -15,12 +15,12 @@ namespace SistemaChamados.API.Controllers;
 public class ChamadosController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
-    private readonly IGeminiService _geminiService;
+    private readonly IOpenAIService _openAIService;
 
-    public ChamadosController(ApplicationDbContext context, IGeminiService geminiService)
+    public ChamadosController(ApplicationDbContext context, IOpenAIService openAIService)
     {
         _context = context;
-        _geminiService = geminiService;
+        _openAIService = openAIService;
     }
 
     [HttpPost]
@@ -156,7 +156,7 @@ public async Task<IActionResult> AnalisarChamado([FromBody] AnalisarChamadoReque
 
     try
     {
-        var analise = await _geminiService.AnalisarChamadoAsync(request.DescricaoProblema);
+        var analise = await _openAIService.AnalisarChamadoAsync(request.DescricaoProblema);
         
         if (analise == null)
         {

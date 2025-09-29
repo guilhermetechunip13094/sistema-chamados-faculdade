@@ -1,6 +1,6 @@
 namespace SistemaChamados.Application.DTOs;
 
-public class GeminiAnaliseResponseDto
+public class AnaliseChamadoResponseDto
 {
     public int CategoriaId { get; set; }
     public string CategoriaNome { get; set; } = string.Empty;
