@@ -36,16 +36,14 @@ public class ChamadosController : ControllerBase
         }
 
         // Validar se a categoria existe e está ativa
-        var categoria = await _context.Categorias
-            .FirstOrDefaultAsync(c => c.Id == request.CategoriaId && c.Ativo);
+        var categoria = await _context.Categorias.FindAsync(request.CategoriaId);
         if (categoria == null)
         {
             return BadRequest("Categoria não encontrada ou inativa");
         }
 
         // Validar se a prioridade existe e está ativa
-        var prioridade = await _context.Prioridades
-            .FirstOrDefaultAsync(p => p.Id == request.PrioridadeId && p.Ativo);
+        var prioridade = await _context.Prioridades.FindAsync(request.PrioridadeId);
         if (prioridade == null)
         {
             return BadRequest("Prioridade não encontrada ou inativa");
@@ -53,8 +51,7 @@ public class ChamadosController : ControllerBase
 
         // Validar se o usuário existe
         var solicitanteId = int.Parse(solicitanteIdStr);
-        var usuario = await _context.Usuarios
-            .FirstOrDefaultAsync(u => u.Id == solicitanteId && u.Ativo);
+        var usuario = await _context.Usuarios.FindAsync(solicitanteId);
         if (usuario == null)
         {
             return Unauthorized("Usuário não encontrado ou inativo");
