@@ -26,6 +26,8 @@ public class Usuario
     
     [Required]
     public bool Ativo { get; set; } = true;
+
+    public int? EspecialidadeCategoriaId { get; set; }
     
     // Campos para reset de senha
     [MaxLength(128)]
