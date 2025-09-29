@@ -16,11 +16,13 @@ public class ChamadosController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly IOpenAIService _openAIService;
+    private readonly ILogger<ChamadosController> _logger;
 
-    public ChamadosController(ApplicationDbContext context, IOpenAIService openAIService)
+    public ChamadosController(ApplicationDbContext context, IOpenAIService openAIService, ILogger<ChamadosController> logger)
     {
         _context = context;
         _openAIService = openAIService;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -144,30 +146,53 @@ public async Task<IActionResult> AtualizarChamado(int id, [FromBody] AtualizarCh
 [HttpPost("analisar")]
 public async Task<IActionResult> AnalisarChamado([FromBody] AnalisarChamadoRequestDto request)
 {
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
     if (string.IsNullOrWhiteSpace(request.DescricaoProblema))
     {
-        return BadRequest("Descrição do problema é obrigatória");
+        return BadRequest("Descrição do problema é obrigatória.");
     }
 
     try
     {
+        // 1. Pede a análise da IA (como antes)
         var analise = await _openAIService.AnalisarChamadoAsync(request.DescricaoProblema);
         
         if (analise == null)
         {
-            return StatusCode(500, "Erro ao analisar o chamado. Tente novamente.");
+            return StatusCode(500, "Erro ao obter análise da IA. Tente novamente.");
         }
 
-        return Ok(analise);
+        // 2. Pega o ID do usuário que fez a requisição
+        var solicitanteIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (solicitanteIdStr == null)
+        {
+            return Unauthorized();
+        }
+        var solicitanteId = int.Parse(solicitanteIdStr);
+
+        // 3. Cria o novo chamado com os dados da IA e do usuário
+        var novoChamado = new Chamado
+        {
+            Titulo = analise.TituloSugerido,
+            Descricao = request.DescricaoProblema,
+            DataAbertura = DateTime.UtcNow,
+            SolicitanteId = solicitanteId,
+            StatusId = 1, // Padrão: "Aberto"
+            PrioridadeId = analise.PrioridadeId,
+            CategoriaId = analise.CategoriaId
+        };
+
+        // 4. Salva o novo chamado no banco de dados
+        _context.Chamados.Add(novoChamado);
+        await _context.SaveChangesAsync();
+
+        // 5. Retorna o chamado que foi CRIADO no banco (com seu novo ID)
+        return CreatedAtAction(nameof(GetChamadoPorId), new { id = novoChamado.Id }, novoChamado);
     }
     catch (Exception ex)
     {
-        return StatusCode(500, $"Erro interno: {ex.Message}");
+        // Logar o erro real no seu console
+        _logger.LogError(ex, "Erro no processo de análise e criação de chamado.");
+        return StatusCode(500, "Ocorreu um erro inesperado ao processar seu chamado.");
     }
 }
 }
