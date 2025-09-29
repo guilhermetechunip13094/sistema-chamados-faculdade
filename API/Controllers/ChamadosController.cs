@@ -118,18 +118,35 @@ public async Task<IActionResult> AtualizarChamado(int id, [FromBody] AtualizarCh
     {
         return NotFound("Chamado não encontrado.");
     }
+
     // Valida se o novo StatusId existe
     var statusExiste = await _context.Status.AnyAsync(s => s.Id == request.StatusId);
     if (!statusExiste)
     {
         return BadRequest("O StatusId fornecido é inválido.");
     }
+
+    // --- INÍCIO DA NOVA LÓGICA ---
+    // 1. Atualiza sempre a data da última modificação
+    chamado.DataUltimaAtualizacao = DateTime.UtcNow;
+
+    // 2. Verifica se o novo status é 'Fechado' (vamos assumir que o ID 4 é "Fechado")
+    if (request.StatusId == 4) 
+    {
+        chamado.DataFechamento = DateTime.UtcNow;
+    }
+    else
+    {
+        // Garante que a data de fechamento seja nula se o chamado for reaberto
+        chamado.DataFechamento = null;
+    }
+    // --- FIM DA NOVA LÓGICA ---
+
     // Atualiza os campos do chamado
     chamado.StatusId = request.StatusId;
-    // Se um TecnicoId foi fornecido, atualiza. Senão, mantém o existente.
+
     if (request.TecnicoId.HasValue)
     {
-        // Valida se o novo TecnicoId existe
         var tecnicoExiste = await _context.Usuarios.AnyAsync(u => u.Id == request.TecnicoId.Value && u.Ativo);
         if (!tecnicoExiste)
         {
@@ -137,9 +154,10 @@ public async Task<IActionResult> AtualizarChamado(int id, [FromBody] AtualizarCh
         }
         chamado.TecnicoId = request.TecnicoId;
     }
+
     _context.Chamados.Update(chamado);
     await _context.SaveChangesAsync();
-    // Retorna o chamado atualizado
+
     return Ok(chamado);
 }
 
