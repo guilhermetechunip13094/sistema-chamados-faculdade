@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SistemaChamados.Application.DTOs;
 using SistemaChamados.Core.Entities;
 using SistemaChamados.Data;
+using SistemaChamados.Services;
 using System.Security.Claims;
 
 namespace SistemaChamados.API.Controllers;
@@ -14,10 +15,12 @@ namespace SistemaChamados.API.Controllers;
 public class ChamadosController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly IGeminiService _geminiService;
 
-    public ChamadosController(ApplicationDbContext context)
+    public ChamadosController(ApplicationDbContext context, IGeminiService geminiService)
     {
         _context = context;
+        _geminiService = geminiService;
     }
 
     [HttpPost]
@@ -137,4 +140,40 @@ public async Task<IActionResult> AtualizarChamado(int id, [FromBody] AtualizarCh
     // Retorna o chamado atualizado
     return Ok(chamado);
 }
+
+[HttpPost("analisar")]
+public async Task<IActionResult> AnalisarChamado([FromBody] AnalisarChamadoRequestDto request)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (string.IsNullOrWhiteSpace(request.DescricaoProblema))
+    {
+        return BadRequest("Descrição do problema é obrigatória");
+    }
+
+    try
+    {
+        var analise = await _geminiService.AnalisarChamadoAsync(request.DescricaoProblema);
+        
+        if (analise == null)
+        {
+            return StatusCode(500, "Erro ao analisar o chamado. Tente novamente.");
+        }
+
+        return Ok(analise);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Erro interno: {ex.Message}");
+    }
+}
+}
+
+// DTO para requisição de análise
+public class AnalisarChamadoRequestDto
+{
+    public string DescricaoProblema { get; set; } = string.Empty;
 }

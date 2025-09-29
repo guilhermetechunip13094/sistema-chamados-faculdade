@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SistemaChamados.Application.Services;
+using SistemaChamados.Services;
 using SistemaChamados.Data;
 using System.Text;
 
@@ -12,10 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configurar Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
     
 // Registrar serviços
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IGeminiService, GeminiService>();
+
+// Configurar HttpClient para o GeminiService
+builder.Services.AddHttpClient<IGeminiService, GeminiService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
