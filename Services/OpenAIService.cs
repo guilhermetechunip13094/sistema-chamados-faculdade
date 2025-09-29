@@ -69,7 +69,22 @@ namespace SistemaChamados.Services
                     return null;
                 }
 
-                return JsonSerializer.Deserialize<AnaliseChamadoResponseDto>(resultText);
+                var analise = JsonSerializer.Deserialize<AnaliseChamadoResponseDto>(resultText);
+                
+                if (analise != null)
+                {
+                    // Nova Lógica: Buscar técnico especialista
+                    var tecnicoEspecialista = await _context.Usuarios
+                        .FirstOrDefaultAsync(u => u.TipoUsuario == 3 && u.EspecialidadeCategoriaId == analise.CategoriaId && u.Ativo);
+                    
+                    if (tecnicoEspecialista != null)
+                    {
+                        analise.TecnicoId = tecnicoEspecialista.Id;
+                        analise.TecnicoNome = tecnicoEspecialista.NomeCompleto;
+                    }
+                }
+                
+                return analise;
             }
             catch (Exception ex)
             {

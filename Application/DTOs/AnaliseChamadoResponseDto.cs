@@ -10,4 +10,6 @@ public class AnaliseChamadoResponseDto
     public string Justificativa { get; set; } = string.Empty;
     public double ConfiancaCategoria { get; set; }
     public double ConfiancaPrioridade { get; set; }
+    public int? TecnicoId { get; set; }
+    public string? TecnicoNome { get; set; }
 }

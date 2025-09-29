@@ -196,7 +196,8 @@ public async Task<IActionResult> AnalisarChamado([FromBody] AnalisarChamadoReque
             SolicitanteId = solicitanteId,
             StatusId = 1, // Padrão: "Aberto"
             PrioridadeId = analise.PrioridadeId,
-            CategoriaId = analise.CategoriaId
+            CategoriaId = analise.CategoriaId,
+            TecnicoId = analise.TecnicoId // Adicionar esta linha
         };
 
         // 4. Salva o novo chamado no banco de dados
