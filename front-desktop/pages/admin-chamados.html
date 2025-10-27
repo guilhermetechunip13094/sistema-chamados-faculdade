@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gerenciar Chamados — Sistema de Chamados</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />`n    <link rel="stylesheet" href="../assets/css/responsive.css" />`n    <link rel="stylesheet" href="../assets/css/contrast-fixes.css" />
+</head>
+<body>
+    <div class="app">
+        <!-- Alert global -->
+        <div id="alert" class="alert"></div>
+
+        <!-- Topbar: marca (logo centralizada) -->
+        <div class="topbar">
+            <div class="brand">
+                <img src="../assets/images/logo.png" alt="Sistema de Chamados" />
+            </div>
+        </div>
+
+        <!-- Header: navegação do Admin -->
+        <header class="header">
+            <div class="wrap">
+                <div class="user-info">
+                    <span class="welcome-text">Admin: <strong id="user-name">Carregando...</strong></span>
+                    <span class="user-role">👑 Administrador</span>
+                </div>
+                <nav>
+                    <a href="admin-dashboard.html">Dashboard</a>
+                    <a class="active" href="admin-chamados.html">Gerenciar Chamados</a>
+                    <a href="dashboard.html">Ver como Usuário</a>
+                    <a href="config.html">Configurações</a>
+                    <a href="#" id="nav-logout">Sair</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Conteúdo: Gerenciar Chamados -->
+        <main class="main">
+            <div class="page-header">
+                <h2 class="page-title">Gerenciar Todos os Chamados</h2>
+                <button type="button" id="btn-analyze-all" class="btn btn-primary">
+                    🤖 Analisar Todos com IA
+                </button>
+            </div>
+
+            <!-- Filtros -->
+            <section class="card">
+                <h3 class="card-title">Filtros</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="flt-status">Status</label>
+                        <select id="flt-status">
+                            <option value="">Todos</option>
+                            <option value="Aberto">Aberto</option>
+                            <option value="Em Andamento">Em Andamento</option>
+                            <option value="Pendente">Pendente</option>
+                            <option value="Resolvido">Resolvido</option>
+                            <option value="Fechado">Fechado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="flt-priority">Prioridade</label>
+                        <select id="flt-priority">
+                            <option value="">Todas</option>
+                            <option value="Baixa">Baixa</option>
+                            <option value="Média">Média</option>
+                            <option value="Alta">Alta</option>
+                            <option value="Crítica">Crítica</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="flt-category">Categoria</label>
+                        <select id="flt-category">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="flt-tech">Técnico</label>
+                        <select id="flt-tech">
+                            <option value="">Todos</option>
+                            <option value="unassigned">Não Atribuídos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="flt-search">Buscar</label>
+                    <input
+                        type="text"
+                        id="flt-search"
+                        placeholder="Buscar por título ou descrição..."
+                    />
+                </div>
+
+                <div class="actions">
+                    <button type="button" id="btn-clear-filters" class="btn btn-secondary">
+                        Limpar Filtros
+                    </button>
+                    <span id="results-count" class="results-count">0 chamados encontrados</span>
+                </div>
+            </section>
+
+            <!-- Loading state -->
+            <div id="loading" class="loading-container" style="display: none;">
+                <div class="spinner-large"></div>
+                <p>Carregando chamados...</p>
+            </div>
+
+            <!-- Empty state -->
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <div class="empty-icon">📭</div>
+                <h3>Nenhum chamado encontrado</h3>
+                <p>Não há chamados que correspondam aos filtros selecionados.</p>
+            </div>
+
+            <!-- Tabela de chamados -->
+            <section id="tickets-table" class="card mt-24">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Título</th>
+                                <th>Status</th>
+                                <th>Prioridade</th>
+                                <th>Categoria</th>
+                                <th>Técnico</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tickets-body">
+                            <tr>
+                                <td colspan="8" class="text-center text-muted">
+                                    Carregando chamados...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">Sistema de Chamados • v1.0.0 • Admin</footer>
+    </div>
+
+    <!-- Modal: Atribuir Técnico -->
+    <div id="modal-assign" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Atribuir Técnico</h3>
+                <button type="button" class="modal-close" id="close-assign">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Chamado:</strong> <span id="assign-ticket-title">-</span></p>
+                <p><strong>ID:</strong> #<span id="assign-ticket-id">-</span></p>
+                
+                <div class="form-group mt-16">
+                    <label for="assign-tech-select">Selecione o Técnico:</label>
+                    <select id="assign-tech-select" class="form-control">
+                        <option value="">Carregando técnicos...</option>
+                    </select>
+                </div>
+
+                <div class="alert alert-info mt-16">
+                    <strong>💡 Dica:</strong> Use "Analisar com IA" para obter sugestão inteligente!
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-cancel-assign" class="btn btn-secondary">
+                    Cancelar
+                </button>
+                <button type="button" id="btn-confirm-assign" class="btn btn-primary">
+                    Atribuir Técnico
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Analisar com IA -->
+    <div id="modal-analyze" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>🤖 Análise com IA + Handoff</h3>
+                <button type="button" class="modal-close" id="close-analyze">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Chamado:</strong> <span id="analyze-ticket-title">-</span></p>
+                <p><strong>ID:</strong> #<span id="analyze-ticket-id">-</span></p>
+                
+                <!-- Loading análise -->
+                <div id="analyze-loading" class="loading-container" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analisando com IA + Handoff...</p>
+                </div>
+
+                <!-- Resultado da análise -->
+                <div id="analyze-result" style="display: none;">
+                    <div class="alert alert-success mt-16">
+                        <h4>✅ Técnico Recomendado</h4>
+                        <p class="tech-recommended">
+                            <strong id="analyze-tech-name">-</strong>
+                            <span class="score-badge" id="analyze-tech-score">0 pts</span>
+                        </p>
+                    </div>
+
+                    <div class="card mt-16">
+                        <h4 class="card-title">📊 Breakdown de Scores</h4>
+                        <div id="scores-breakdown" class="scores-list">
+                            <!-- Scores serão inseridos aqui -->
+                        </div>
+                    </div>
+
+                    <div class="card mt-16">
+                        <h4 class="card-title">💭 Justificativa da IA</h4>
+                        <p id="analyze-justification" class="justification-text">-</p>
+                    </div>
+
+                    <div class="card mt-16">
+                        <h4 class="card-title">🏆 Ranking de Técnicos</h4>
+                        <div id="technicians-ranking" class="ranking-list">
+                            <!-- Ranking será inserido aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-cancel-analyze" class="btn btn-secondary">
+                    Fechar
+                </button>
+                <button type="button" id="btn-assign-from-analyze" class="btn btn-primary" style="display: none;">
+                    Atribuir Técnico Recomendado
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/loading.js"></script>`r`n    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/admin-chamados.js"></script>
+</body>
+</html>

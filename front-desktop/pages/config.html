@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Sistema de Chamados</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="wrap">
+                <div class="brand">
+                    <h1>Sistema de Chamados</h1>
+                </div>
+                <nav>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="novo-ticket.html">Novo Chamado</a>
+                    <a href="config.html" class="active">Configurações</a>
+                    <a href="#" id="logoutBtn">Sair</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="page-header">
+                <h2>Configurações</h2>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="perfil">
+                    👤 Perfil
+                </button>
+                <button class="tab-btn" data-tab="senha">
+                    🔒 Segurança
+                </button>
+                <button class="tab-btn" data-tab="notificacoes">
+                    🔔 Notificações
+                </button>
+            </div>
+
+            <!-- Tab: Perfil -->
+            <div id="perfilTab" class="tab-content active">
+                <div class="card">
+                    <h3>Informações do Perfil</h3>
+                    
+                    <form id="perfilForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome Completo *</label>
+                                <input 
+                                    type="text" 
+                                    id="nome" 
+                                    class="form-control" 
+                                    placeholder="Seu nome completo"
+                                    required
+                                >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">E-mail *</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    class="form-control" 
+                                    placeholder="seu@email.com"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cpf">CPF</label>
+                                <input 
+                                    type="text" 
+                                    id="cpf" 
+                                    class="form-control" 
+                                    placeholder="000.000.000-00"
+                                    maxlength="14"
+                                >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefone">Telefone</label>
+                                <input 
+                                    type="text" 
+                                    id="telefone" 
+                                    class="form-control" 
+                                    placeholder="(00) 00000-0000"
+                                    maxlength="15"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Função</label>
+                            <input 
+                                type="text" 
+                                id="role" 
+                                class="form-control" 
+                                disabled
+                            >
+                            <small class="text-muted">Este campo não pode ser alterado</small>
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" class="btn btn-primary">
+                                Salvar Alterações
+                            </button>
+                            <button type="button" class="btn btn-outline" id="cancelPerfilBtn">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tab: Senha -->
+            <div id="senhaTab" class="tab-content">
+                <div class="card">
+                    <h3>Alterar Senha</h3>
+                    
+                    <form id="senhaForm">
+                        <div class="form-group">
+                            <label for="senhaAtual">Senha Atual *</label>
+                            <input 
+                                type="password" 
+                                id="senhaAtual" 
+                                class="form-control" 
+                                placeholder="Digite sua senha atual"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="novaSenha">Nova Senha *</label>
+                            <input 
+                                type="password" 
+                                id="novaSenha" 
+                                class="form-control" 
+                                placeholder="Mínimo 6 caracteres"
+                                minlength="6"
+                                required
+                            >
+                            <small class="text-muted">
+                                Deve conter pelo menos 6 caracteres
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmarSenha">Confirmar Nova Senha *</label>
+                            <input 
+                                type="password" 
+                                id="confirmarSenha" 
+                                class="form-control" 
+                                placeholder="Digite a senha novamente"
+                                minlength="6"
+                                required
+                            >
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>ℹ️ Dica:</strong> Use uma senha forte com letras, números e símbolos.
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" class="btn btn-primary">
+                                Alterar Senha
+                            </button>
+                            <button type="button" class="btn btn-outline" id="cancelSenhaBtn">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tab: Notificações -->
+            <div id="notificacoesTab" class="tab-content">
+                <div class="card">
+                    <h3>Preferências de Notificações</h3>
+                    <p class="text-muted">Configure como deseja receber notificações no sistema.</p>
+                    
+                    <div class="settings-group">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Notificações de Novos Chamados</strong>
+                                <p class="text-muted">Receba alertas quando um novo chamado for criado</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifNovosChamados" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Notificações de Atualização</strong>
+                                <p class="text-muted">Receba alertas quando um chamado for atualizado</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifAtualizacoes" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Notificações de Atribuição</strong>
+                                <p class="text-muted">Receba alertas quando um chamado for atribuído a você</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifAtribuicao" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Som de Notificação</strong>
+                                <p class="text-muted">Reproduzir som ao receber notificações</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifSom">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Nota:</strong> As configurações de notificações são salvas localmente no navegador.
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="btn btn-primary" id="salvarNotifBtn">
+                            Salvar Preferências
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Sistema de Chamados - Faculdade © 2025</p>
+        </footer>
+    </div>
+
+    <!-- Modal de Loading -->
+    <div id="loadingModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div class="spinner"></div>
+            <p id="loadingMessage">Carregando...</p>
+        </div>
+    </div>
+
+    <script src="../assets/js/loading.js"></script>`r`n    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/config.js"></script>
+</body>
+</html>

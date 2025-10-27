@@ -1,0 +1,288 @@
+<!DOCTYPE html><!DOCTYPE html>
+
+<html lang="pt-BR"><html lang="pt-BR">
+
+<head>  <head>
+
+    <meta charset="utf-8" />    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <title>Admin Dashboard — Sistema de Chamados</title>    <title>Admin — Dashboard</title>
+
+    <link rel="stylesheet" href="../assets/css/style.css" />`n    <link rel="stylesheet" href="../assets/css/responsive.css" />`n    <link rel="stylesheet" href="../assets/css/contrast-fixes.css" />    <link rel="stylesheet" href="style-web.css" />
+
+    <!-- Chart.js via CDN -->  </head>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>  <body>
+
+</head>    <div class="app">
+
+<body>      <!-- Topbar: marca (logo centralizada) -->
+
+    <div class="app">      <div class="topbar">
+
+        <!-- Alert global -->        <div class="brand"><img src="logo.png" alt="H2O" /></div>
+
+        <div id="alert" class="alert"></div>      </div>
+
+
+
+        <!-- Topbar: marca (logo centralizada) -->      <!-- Header: navegação do módulo Admin -->
+
+        <div class="topbar">      <header class="header">
+
+            <div class="brand">        <div class="wrap">
+
+                <img src="../assets/images/logo.png" alt="Sistema de Chamados" />          <nav>
+
+            </div>            <a class="active" href="admin-dashboard-web.html">Início</a>
+
+        </div>            <a href="admin-tickets-web.html">Chamados</a>
+
+            <a href="config-web.html">Config</a>
+
+        <!-- Header: navegação do Admin -->            <a href="login-web.html" id="nav-logout">Sair</a>
+
+        <header class="header">          </nav>
+
+            <div class="wrap">        </div>
+
+                <div class="user-info">      </header>
+
+                    <span class="welcome-text">Admin: <strong id="user-name">Carregando...</strong></span>
+
+                    <span class="user-role">👑 Administrador</span>      <!-- Conteúdo: KPIs + tabela geral -->
+
+                </div>      <main class="main">
+
+                <nav>        <h2 class="page-title text-center">Visão geral</h2>
+
+                    <a class="active" href="admin-dashboard.html">Dashboard</a>
+
+                    <a href="admin-chamados.html">Gerenciar Chamados</a>        <!-- Indicadores principais (preenchidos no JS) -->
+
+                    <a href="dashboard.html">Ver como Usuário</a>        <section class="grid grid-4">
+
+                    <a href="config.html">Configurações</a>          <div class="card kpi">
+
+                    <a href="#" id="nav-logout">Sair</a>            <span class="label">Total</span
+
+                </nav>            ><span class="value" id="kpi-total">0</span>
+
+            </div>          </div>
+
+        </header>          <div class="card kpi">
+
+            <span class="label">Abertos</span
+
+        <!-- Conteúdo: Dashboard Admin -->            ><span class="value" id="kpi-aberto">0</span>
+
+        <main class="main">          </div>
+
+            <h2 class="page-title text-center">Dashboard Administrativo</h2>          <div class="card kpi">
+
+            <span class="label">Pendentes</span
+
+            <!-- Loading state -->            ><span class="value" id="kpi-pendente">0</span>
+
+            <div id="loading" class="loading-container" style="display: none;">          </div>
+
+                <div class="spinner-large"></div>          <div class="card kpi">
+
+                <p>Carregando estatísticas...</p>            <span class="label">Em andamento</span
+
+            </div>            ><span class="value" id="kpi-andamento">0</span>
+
+          </div>
+
+            <!-- Estatísticas principais (KPIs) -->          <div class="card kpi">
+
+            <section id="stats-section" class="stats-grid-admin">            <span class="label">Resolvidos</span
+
+                <div class="stat-card-admin stat-total">            ><span class="value" id="kpi-resolvido">0</span>
+
+                    <div class="stat-icon-admin">📊</div>          </div>
+
+                    <div class="stat-content-admin">        </section>
+
+                        <h3 id="kpi-total">0</h3>
+
+                        <p>Total de Chamados</p>        <!-- Tabela geral (mesmos filtros da página de chamados admin) -->
+
+                    </div>        <section class="card mt-24">
+
+                </div>          <h3 class="page-title fs-20 mb-12 text-center">Chamados</h3>
+
+                <div class="stat-card-admin stat-open">
+
+                    <div class="stat-icon-admin">🔓</div>          <div class="form-row">
+
+                    <div class="stat-content-admin">            <div class="form-group">
+
+                        <h3 id="kpi-open">0</h3>              <label>Status</label>
+
+                        <p>Abertos</p>              <select id="flt-status-admin">
+
+                    </div>                <option value="">Todos</option>
+
+                </div>                <option value="aberto">Aberto</option>
+
+                <div class="stat-card-admin stat-progress">                <option value="pendente">Pendente</option>
+
+                    <div class="stat-icon-admin">⚙️</div>                <option value="andamento">Em andamento</option>
+
+                    <div class="stat-content-admin">                <option value="resolvido">Resolvido</option>
+
+                        <h3 id="kpi-progress">0</h3>              </select>
+
+                        <p>Em Andamento</p>            </div>
+
+                    </div>            <div class="form-group">
+
+                </div>              <label>Prioridade</label>
+
+                <div class="stat-card-admin stat-pending">              <select id="flt-prio-admin">
+
+                    <div class="stat-icon-admin">⏸️</div>                <option value="">Todas</option>
+
+                    <div class="stat-content-admin">                <option value="alta">Alta</option>
+
+                        <h3 id="kpi-pending">0</h3>                <option value="media">Média</option>
+
+                        <p>Pendentes</p>                <option value="baixa">Baixa</option>
+
+                    </div>              </select>
+
+                </div>            </div>
+
+                <div class="stat-card-admin stat-resolved">          </div>
+
+                    <div class="stat-icon-admin">✅</div>
+
+                    <div class="stat-content-admin">          <table class="table">
+
+                        <h3 id="kpi-resolved">0</h3>            <thead>
+
+                        <p>Resolvidos</p>              <tr>
+
+                    </div>                <th>#</th>
+
+                </div>                <th>Título</th>
+
+                <div class="stat-card-admin stat-closed">                <th>Status</th>
+
+                    <div class="stat-icon-admin">🔒</div>                <th>Prioridade</th>
+
+                    <div class="stat-content-admin">                <th>Categoria</th>
+
+                        <h3 id="kpi-closed">0</h3>                <th></th>
+
+                        <p>Fechados</p>              </tr>
+
+                    </div>            </thead>
+
+                </div>            <tbody id="tickets-body-admin"></tbody>
+
+            </section>          </table>
+
+        </section>
+
+            <!-- Gráficos -->      </main>
+
+            <section id="charts-section" class="charts-grid">
+
+                <!-- Gráfico: Chamados por Status -->      <footer class="footer">H2O • v1.0.0</footer>
+
+                <div class="card chart-card">    </div>
+
+                    <h3 class="chart-title">Chamados por Status</h3>    <script src="script-web.js"></script>
+
+                    <div class="chart-container">  </body>
+
+                        <canvas id="chart-status"></canvas></html>
+
+                    </div>
+                </div>
+
+                <!-- Gráfico: Chamados por Categoria -->
+                <div class="card chart-card">
+                    <h3 class="chart-title">Chamados por Categoria</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-category"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico: Chamados por Prioridade -->
+                <div class="card chart-card">
+                    <h3 class="chart-title">Chamados por Prioridade</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-priority"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ações rápidas -->
+            <section class="card mt-24">
+                <h3 class="card-title">Ações Rápidas</h3>
+                <div class="actions-grid">
+                    <button type="button" id="btn-manage-tickets" class="btn btn-primary">
+                        📋 Gerenciar Todos os Chamados
+                    </button>
+                    <button type="button" id="btn-view-technicians" class="btn btn-secondary">
+                        🔧 Visualizar Técnicos
+                    </button>
+                    <button type="button" id="btn-view-users" class="btn btn-secondary">
+                        👥 Visualizar Usuários
+                    </button>
+                    <button type="button" id="btn-refresh" class="btn btn-secondary">
+                        🔄 Atualizar Estatísticas
+                    </button>
+                </div>
+            </section>
+
+            <!-- Chamados recentes -->
+            <section class="card mt-24">
+                <div class="card-header-flex">
+                    <h3 class="card-title">Chamados Recentes</h3>
+                    <a href="admin-chamados.html" class="link-primary">Ver todos →</a>
+                </div>
+                
+                <div id="recent-tickets-loading" class="loading-container" style="display: none;">
+                    <div class="spinner"></div>
+                </div>
+
+                <div id="recent-tickets-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Título</th>
+                                <th>Status</th>
+                                <th>Prioridade</th>
+                                <th>Categoria</th>
+                                <th>Técnico</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-tickets-body">
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">
+                                    Carregando chamados...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">Sistema de Chamados • v1.0.0 • Admin Dashboard</footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/loading.js"></script>`r`n    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/admin-dashboard.js"></script>
+</body>
+</html>
