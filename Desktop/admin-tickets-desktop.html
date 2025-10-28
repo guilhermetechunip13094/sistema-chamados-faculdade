@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Chamados - Sistema Desktop</title>
+    <link rel="stylesheet" href="style-desktop.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Sidebar fixa -->
+      <aside class="sidebar">
+        <img src="img/logo-h2o.png" alt="Logo H2O" class="logo" />
+        <nav>
+          <a href="admin-dashboard-desktop.html">📊 Painel</a>
+          <a href="admin-tickets-desktop.html" class="active">📋 Chamados</a>
+          <a href="config-desktop.html">⚙️ Configurações</a>
+          <a href="login-desktop.html" id="nav-logout">🚪 Sair</a>
+        </nav>
+      </aside>
+
+      <!-- Área principal -->
+      <div class="main">
+        <header class="header">
+          <h1>Gerenciar Chamados</h1>
+        </header>
+
+        <section class="content">
+          <div class="card">
+            <!-- Filtros -->
+            <div class="form-row" style="margin-bottom: 16px">
+              <div class="form-group">
+                <label for="flt-status-admin">Filtrar por status</label>
+                <select id="flt-status-admin">
+                  <option value="">Todos</option>
+                  <option value="aberto">Aberto</option>
+                  <option value="pendente">Pendente</option>
+                  <option value="andamento">Em andamento</option>
+                  <option value="resolvido">Resolvido</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="flt-prio-admin">Filtrar por prioridade</label>
+                <select id="flt-prio-admin">
+                  <option value="">Todas</option>
+                  <option value="alta">Alta</option>
+                  <option value="media">Média</option>
+                  <option value="baixa">Baixa</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="flt-search-admin">Pesquisar</label>
+                <input
+                  type="text"
+                  id="flt-search-admin"
+                  placeholder="Buscar por título, ID ou categoria..."
+                />
+              </div>
+            </div>
+
+            <!-- Tabela de chamados -->
+            <table class="table" id="tickets-body-admin">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Título</th>
+                  <th>Categoria</th>
+                  <th>Status</th>
+                  <th>Prioridade</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <footer class="footer">
+          © 2025 Neuro Help — Painel Administrativo
+        </footer>
+      </div>
+    </div>
+
+    <script src="script-desktop.js"></script>
+  </body>
+</html>

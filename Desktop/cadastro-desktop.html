@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Conta - Sistema de Chamados (Desktop)</title>
+
+    <!-- Importa o CSS global -->
+    <link rel="stylesheet" href="style-desktop.css" />
+  </head>
+
+  <body>
+    <main class="centered">
+      <div class="auth-box">
+        <!-- Logo -->
+        <div style="text-align: center; margin-bottom: 24px">
+          <img
+            src="img/logo-h2o.png"
+            alt="Logo Neuro Help"
+            style="width: 180px; height: auto"
+          />
+        </div>
+
+        <!-- Título -->
+        <h1 class="auth-title">Criar nova conta</h1>
+        <p style="color: #64748b; margin-bottom: 20px">
+          Preencha os campos abaixo para se registrar
+        </p>
+
+        <!-- Formulário -->
+        <form id="register-form">
+          <!-- Nome -->
+          <div class="form-group">
+            <label for="r-name">Nome completo</label>
+            <input
+              type="text"
+              id="r-name"
+              name="r-name"
+              placeholder="Seu nome completo"
+              required
+              autocomplete="name"
+            />
+          </div>
+
+          <!-- E-mail -->
+          <div class="form-group">
+            <label for="r-email">E-mail</label>
+            <input
+              type="email"
+              id="r-email"
+              name="r-email"
+              placeholder="exemplo@empresa.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+
+          <!-- Senha -->
+          <div class="form-group password-wrapper">
+            <label for="r-pass">Senha</label>
+            <input
+              type="password"
+              id="r-pass"
+              name="r-pass"
+              placeholder="Digite sua senha"
+              required
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="toggle-btn"
+              data-target="r-pass"
+              title="Mostrar/ocultar senha"
+            >
+              👁️
+            </button>
+          </div>
+
+          <!-- Confirmar Senha -->
+          <div class="form-group password-wrapper">
+            <label for="r-confirm">Confirmar senha</label>
+            <input
+              type="password"
+              id="r-confirm"
+              name="r-confirm"
+              placeholder="Repita sua senha"
+              required
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="toggle-btn"
+              data-target="r-confirm"
+              title="Mostrar/ocultar senha"
+            >
+              👁️
+            </button>
+          </div>
+
+          <!-- Botão de envio -->
+          <button type="submit" class="btn btn-primary" style="width: 100%">
+            Criar conta
+          </button>
+        </form>
+
+        <!-- Link para login -->
+        <p style="text-align: center; margin-top: 16px">
+          Já possui conta?
+          <a
+            href="login-desktop.html"
+            style="color: var(--primary); font-weight: 600"
+            >Fazer login</a
+          >
+        </p>
+      </div>
+    </main>
+
+    <!-- Importa o script principal -->
+    <script src="script-desktop.js"></script>
+  </body>
+</html>

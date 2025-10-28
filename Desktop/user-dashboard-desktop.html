@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meus Chamados - Sistema Desktop</title>
+    <link rel="stylesheet" href="style-desktop.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <img src="img/logo-h2o.png" alt="Logo H2O" class="logo" />
+        <nav>
+          <a href="user-dashboard-desktop.html" class="active">🏠 Início</a>
+          <a href="novo-ticket-desktop.html">🆕 Novo Chamado</a>
+          <a href="config-desktop.html">⚙️ Configurações</a>
+          <a href="login-desktop.html" id="nav-logout">🚪 Sair</a>
+        </nav>
+      </aside>
+
+      <!-- Área principal -->
+      <div class="main">
+        <!-- Cabeçalho -->
+        <header class="header">
+          <h1>Meus Chamados</h1>
+          <div class="user-info">Bem-vindo(a)</div>
+        </header>
+
+        <!-- Conteúdo -->
+        <section class="content">
+          <div class="card">
+            <table class="table" id="tickets-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Título</th>
+                  <th>Categoria</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Rodapé -->
+        <footer class="footer">
+          © 2025 Neuro Help — Sistema de Chamados
+        </footer>
+      </div>
+    </div>
+
+    <script src="script-desktop.js"></script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configurações - Sistema Desktop</title>
+    <link rel="stylesheet" href="style-desktop.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <img src="img/logo-h2o.png" alt="Logo H2O" class="logo" />
+        <nav>
+          <a href="user-dashboard-desktop.html">🏠 Início</a>
+          <a href="novo-ticket-desktop.html">🆕 Novo Chamado</a>
+          <a href="config-desktop.html" class="active">⚙️ Configurações</a>
+          <a href="login-desktop.html" id="nav-logout">🚪 Sair</a>
+        </nav>
+      </aside>
+
+      <div class="main">
+        <header class="header">
+          <h1>Configurações</h1>
+        </header>
+
+        <section class="content">
+          <div class="card">
+            <h2>Preferências do Usuário</h2>
+            <p style="color: #64748b; margin-bottom: 20px">
+              Futuramente aqui serão adicionadas opções de tema e notificações.
+            </p>
+
+            <button id="logout-btn" class="btn btn-danger">
+              Sair do Sistema
+            </button>
+          </div>
+        </section>
+
+        <footer class="footer">
+          © 2025 Neuro Help — Sistema de Chamados
+        </footer>
+      </div>
+    </div>
+
+    <script src="script-desktop.js"></script>
+  </body>
+</html>

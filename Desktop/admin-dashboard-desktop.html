@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Administrativo - Sistema Desktop</title>
+    <link rel="stylesheet" href="style-desktop.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Sidebar fixa -->
+      <aside class="sidebar">
+        <img src="img/logo-h2o.png" alt="Logo H2O" class="logo" />
+        <nav>
+          <a href="admin-dashboard-desktop.html" class="active">📊 Painel</a>
+          <a href="admin-tickets-desktop.html">📋 Chamados</a>
+          <a href="config-desktop.html">⚙️ Configurações</a>
+          <a href="login-desktop.html" id="nav-logout">🚪 Sair</a>
+        </nav>
+      </aside>
+
+      <!-- Conteúdo principal -->
+      <div class="main">
+        <!-- Cabeçalho -->
+        <header class="header">
+          <h1>Painel Administrativo</h1>
+        </header>
+
+        <!-- Conteúdo -->
+        <section class="content">
+          <div class="grid grid-3">
+            <!-- Card KPI -->
+            <div class="card kpi">
+              <span class="label">Total de Chamados</span>
+              <span id="kpi-total" class="value">0</span>
+            </div>
+            <div class="card kpi">
+              <span class="label">Abertos</span>
+              <span id="kpi-aberto" class="value">0</span>
+            </div>
+            <div class="card kpi">
+              <span class="label">Pendentes</span>
+              <span id="kpi-pendente" class="value">0</span>
+            </div>
+            <div class="card kpi">
+              <span class="label">Em andamento</span>
+              <span id="kpi-andamento" class="value">0</span>
+            </div>
+            <div class="card kpi">
+              <span class="label">Resolvidos</span>
+              <span id="kpi-resolvido" class="value">0</span>
+            </div>
+          </div>
+
+          <div class="card mt-32">
+            <h2 style="margin-bottom: 16px">Últimos Chamados</h2>
+            <table class="table" id="tickets-body-admin">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Título</th>
+                  <th>Categoria</th>
+                  <th>Status</th>
+                  <th>Prioridade</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Rodapé -->
+        <footer class="footer">
+          © 2025 Neuro Help — Painel Administrativo
+        </footer>
+      </div>
+    </div>
+
+    <script src="script-desktop.js"></script>
+  </body>
+</html>

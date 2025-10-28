@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Novo Chamado - Sistema Desktop</title>
+    <link rel="stylesheet" href="style-desktop.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <img src="img/logo-h2o.png" alt="Logo H2O" class="logo" />
+        <nav>
+          <a href="user-dashboard-desktop.html">🏠 Início</a>
+          <a href="novo-ticket-desktop.html" class="active">🆕 Novo Chamado</a>
+          <a href="config-desktop.html">⚙️ Configurações</a>
+          <a href="login-desktop.html" id="nav-logout">🚪 Sair</a>
+        </nav>
+      </aside>
+
+      <!-- Área principal -->
+      <div class="main">
+        <header class="header">
+          <h1>Novo Chamado</h1>
+        </header>
+
+        <section class="content">
+          <div class="card">
+            <form id="new-ticket-form">
+              <div class="form-group">
+                <label for="title">Título</label>
+                <input
+                  type="text"
+                  id="title"
+                  placeholder="Ex: Computador travando"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="category">Categoria</label>
+                <select id="category" required>
+                  <option value="">Selecione</option>
+                  <option value="hardware">Hardware</option>
+                  <option value="software">Software</option>
+                  <option value="rede">Rede</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="priority">Prioridade</label>
+                <select id="priority" required>
+                  <option value="">Selecione</option>
+                  <option value="baixa">Baixa</option>
+                  <option value="media">Média</option>
+                  <option value="alta">Alta</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="description">Descrição</label>
+                <textarea
+                  id="description"
+                  rows="5"
+                  placeholder="Descreva o problema..."
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                Registrar Chamado
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <footer class="footer">
+          © 2025 Neuro Help — Sistema de Chamados
+        </footer>
+      </div>
+    </div>
+
+    <script src="script-desktop.js"></script>
+  </body>
+</html>
